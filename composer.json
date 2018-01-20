@@ -1,0 +1,14 @@
+{
+  "require": {
+    "php": ">=7.0",
+    "jublonet/codebird-php": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "CryptoStatus\\": "app/classes/"
+    },
+    "files": [
+      "app/config/config.php"
+    ]
+  }
+}
