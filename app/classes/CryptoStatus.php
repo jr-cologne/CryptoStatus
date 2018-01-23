@@ -108,13 +108,40 @@ class CryptoStatus {
   protected function formatData() {
     $this->dataset = array_map(function (array $data) {
       if (isset($data['rank'], $data['symbol'], $data['name'], $data['price_usd'], $data['price_btc'], $data['percent_change_1h'])) {
-        $data['price_usd'] = number_format($data['price_usd'], 2);
-        $data['price_btc'] = number_format($data['price_btc'], 6);
-        return "#{$data['rank']} {$data['symbol']} ({$data['name']}): {$data['price_usd']} USD | {$data['price_btc']} BTC | {$data['percent_change_1h']}% 1h";
+        $data['price_usd'] = $this->removeTrailingZeros(number_format($data['price_usd'], 2));
+        $data['price_btc'] = $this->removeTrailingZeros(number_format($data['price_btc'], 6));
+        
+        return "#{$data['rank']} #{$data['symbol']} (#{$data['name']}): {$data['price_usd']} USD | {$data['price_btc']} BTC | {$data['percent_change_1h']}% 1h";
       }
 
       throw new CryptoStatusException('Crypto data is missing', 1);
     }, $this->dataset);
+  }
+  
+  /**
+   * Remove trailing zeros after decimal point from number
+   *
+   * @param string $number
+   * @return string
+   */
+  protected function removeTrailingZeros(string $number) : string {
+    $number_arr = array_reverse(str_split($number));
+    
+    foreach ($number_arr as $key => $value) {
+      if (is_numeric($value) && $value == 0) {
+        unset($number_arr[$key]);
+      } else {
+        if (!is_numeric($value)) {
+          unset($number_arr[$key]);
+        }
+
+        break;
+      }
+    }
+    
+    $number = implode(array_reverse($number_arr));
+    
+    return $number;
   }
 
   /**
