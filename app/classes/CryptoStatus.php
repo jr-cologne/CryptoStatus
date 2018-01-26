@@ -108,6 +108,7 @@ class CryptoStatus {
   protected function formatData() {
     $this->dataset = array_map(function (array $data) {
       if (isset($data['rank'], $data['symbol'], $data['name'], $data['price_usd'], $data['price_btc'], $data['percent_change_1h'])) {
+        $data['name'] = $this->camelCase($data['name']);
         $data['price_usd'] = $this->removeTrailingZeros(number_format($data['price_usd'], 2));
         $data['price_btc'] = $this->removeTrailingZeros(number_format($data['price_btc'], 6));
         
@@ -116,6 +117,31 @@ class CryptoStatus {
 
       throw new CryptoStatusException('Crypto data is missing', 1);
     }, $this->dataset);
+  }
+  
+  /**
+   * Convert string to camel case notation.
+   *
+   * @param string $str
+   * @return string
+   */
+  protected function camelCase(string $str) : string {
+    $camel_case_str = '';
+    $capitalize = false;
+    
+    foreach (str_split($str) as $char) {
+      if (ctype_space($char)) {
+        $capitalize = true;
+        continue;
+      } else if ($capitalize) {
+        $char = strtoupper($char);
+        $capitalize = false;
+      }
+
+      $camel_case_str .= $char;
+    }
+    
+    return $camel_case_str;
   }
   
   /**
