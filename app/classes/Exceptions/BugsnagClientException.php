@@ -15,9 +15,9 @@
  *
  * ________________________________________________________________________________
  *
- * TwitterClientException.php
+ * BugsnagClientException.php
  *
- * The Exception of the Twitter client
+ * The Exception of the Bugsnag client
  * 
  */
 
@@ -25,6 +25,6 @@ namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class TwitterClientException extends Exception {
+class BugsnagClientException extends Exception {
   
 }

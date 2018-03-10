@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.1.3
+ * @version v0.2.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________

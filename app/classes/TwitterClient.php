@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.1.3
+ * @version v0.2.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -47,7 +47,6 @@ class TwitterClient {
    * Constructor, initialization and authentication with Twitter API
    * 
    * @param Codebird $twitter_client A Cordbird instance
-   * @param string $twitter_api_credentials_file The Twitter API credentials file
    * @throws TwitterClientException if authentication with Twitter API failed
    */
   public function __construct(Codebird $twitter_client) {

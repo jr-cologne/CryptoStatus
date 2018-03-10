@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.1.3
+ * @version v0.2.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -31,3 +31,5 @@ const TWITTER_SCREENNAME = 'status_crypto';
 const CRYPTO_API = 'https://api.coinmarketcap.com/v1/';
 const CRYPTO_API_ENDPOINT = 'ticker/';
 const CRYPTO_API_LIMIT = 10;
+
+const BUGSNAG_API_KEY = 'BUGSNAG_API_KEY';
