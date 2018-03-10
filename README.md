@@ -6,7 +6,7 @@ Twitter Account: [@status_crypto](https://twitter.com/status_crypto)
 ## Dependencies
 - [PHP](http://php.net/) (version 7.0 or higher)
 - [Codebird Twitter API library](https://github.com/jublonet/codebird-php) (version ^3.1)
-- [Bugsnag PHP library](https://github.com/jublonet/codebird-php) (version ^3.12)
+- [Bugsnag PHP library](https://github.com/bugsnag/bugsnag-php) (version ^3.12)
 
 ## Contributing and Support
 Feel free to contribute to or support this project. Any sort of help is much appreciated.
