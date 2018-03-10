@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.2.0
+ * @version v0.2.1
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -29,8 +29,8 @@ class BugsnagClient {
    * Constructor, initialization of Bugsnag's error handler
    */
   public function __construct() {
-    $bugsnag = Bugsnag\Client::make($this->getApiKey());
-    Bugsnag\Handler::register($bugsnag);
+    $bugsnag = \Bugsnag\Client::make($this->getApiKey());
+    \Bugsnag\Handler::register($bugsnag);
   }
 
   /**
