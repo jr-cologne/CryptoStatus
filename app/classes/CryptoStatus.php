@@ -225,7 +225,7 @@ class CryptoStatus {
       }
     }
 
-    if (count($tweet_ids) == 3) {
+    if (!empty($tweet_ids) && count($tweet_ids) == 3) {
       return true;
     } else {
       $this->failed_tweets = $tweet_ids;
