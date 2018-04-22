@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.2.2
+ * @version v0.2.3
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -205,6 +205,7 @@ class CryptoStatus {
    */
   protected function postTweets(array $tweets) : bool {
     $last_tweet_id = null;
+    $tweet_ids = [];
 
     for ($i = 0; $i < 3; $i++) {
       if ($last_tweet_id) {
