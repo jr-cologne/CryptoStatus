@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.2.3
+ * @version v0.3.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -33,3 +33,15 @@ const CRYPTO_API_ENDPOINT = 'ticker/';
 const CRYPTO_API_LIMIT = 10;
 
 const BUGSNAG_API_KEY = 'BUGSNAG_API_KEY';
+
+const NOTIFICATION_MAIL_FROM = 'NOTIFICATION_MAIL_FROM';
+const NOTIFICATION_MAIL_TO = 'NOTIFICATION_MAIL_TO';
+const NOTIFICATION_MAIL_SUBJECT = 'CryptoStatus error';
+const NOTIFICATION_MAIL_BODY = 'Something went wrong publishing the #HourlyCryptoStatus update!';
+
+const SMTP_SERVER = 'smtp.gmail.com';
+const SMTP_PORT = '587';
+const SMTP_ENCRYPTION = 'tls';
+const SMTP_USERNAME = 'SMTP_USERNAME';
+const SMTP_PASSWORD = 'SMTP_PASSWORD';
+

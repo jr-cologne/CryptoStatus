@@ -15,9 +15,9 @@
  *
  * ________________________________________________________________________________
  *
- * BugsnagClientException.php
+ * MailClientException.php
  *
- * The Exception of the Bugsnag client
+ * The Exception of the Mail client
  * 
  */
 
@@ -25,6 +25,6 @@ namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class BugsnagClientException extends Exception {
+class MailClientException extends Exception {
   
 }
