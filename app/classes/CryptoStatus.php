@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.2.3
+ * @version v0.3.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -28,6 +28,7 @@ use CryptoStatus\Exceptions\CryptoStatusException;
 use CryptoStatus\TwitterClient;
 use CryptoStatus\CurlClient;
 use CryptoStatus\CryptoClient;
+use CryptoStatus\MailClient;
 
 use Codebird\Codebird;
 
@@ -46,6 +47,13 @@ class CryptoStatus {
    * @var CryptoClient $crypto_client
    */
   protected $crypto_client;
+
+  /**
+   * The Mail client instance
+   *
+   * @var MailClient $mail_client
+   */
+  protected $mail_client;
 
   /**
    * The Crypto data
@@ -74,6 +82,14 @@ class CryptoStatus {
         'limit' => CRYPTO_API_LIMIT
       ]
     ]);
+
+    $this->mail_client = new MailClient([
+      'smtp_server' => SMTP_SERVER,
+      'smtp_port' => SMTP_PORT,
+      'smtp_encryption' => SMTP_ENCRYPTION,
+      'smtp_username' => getenv(SMTP_USERNAME),
+      'smtp_password' => getenv(SMTP_PASSWORD)
+    ]);
   }
 
   /**
@@ -88,6 +104,7 @@ class CryptoStatus {
 
     if (!$this->postTweets($tweets)) {
       $this->deleteTweets($this->failed_tweets);
+      $this->sendNotificationMail();
     }
   }
 
@@ -255,6 +272,21 @@ class CryptoStatus {
     if ($deleted_counter != count($tweet_ids)) {
       throw new CryptoStatusException('Deleting Tweets failed', 2);
     }
+  }
+
+  /**
+   * Send notification mail
+   *
+   * @throws CryptoStatusException if notification mail could not be sent
+   * @return bool
+   */
+  protected function sendNotificationMail() : bool {
+    return $this->mail_client->message([
+      'from' => getenv(NOTIFICATION_MAIL_FROM),
+      'to' => getenv(NOTIFICATION_MAIL_TO),
+      'subject' => NOTIFICATION_MAIL_SUBJECT,
+      'body' => NOTIFICATION_MAIL_BODY
+    ])->send();
   }
 
 }
