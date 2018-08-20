@@ -39,8 +39,8 @@ const NOTIFICATION_MAIL_TO = 'NOTIFICATION_MAIL_TO';
 const NOTIFICATION_MAIL_SUBJECT = 'CryptoStatus error';
 const NOTIFICATION_MAIL_BODY = 'Something went wrong publishing the #HourlyCryptoStatus update!';
 
-const SMTP_SERVER = 'smtp.gmail.com';
-const SMTP_PORT = '587';
+const SMTP_SERVER = 'mail.jr-cologne.de';
+const SMTP_PORT = '25';
 const SMTP_ENCRYPTION = 'tls';
 const SMTP_USERNAME = 'SMTP_USERNAME';
 const SMTP_PASSWORD = 'SMTP_PASSWORD';
