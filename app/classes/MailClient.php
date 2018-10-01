@@ -66,9 +66,9 @@ class MailClient
         }
 
         $transport = (new Swift_SmtpTransport($smtp_server, $smtp_port))
-        ->setEncryption($smtp_encryption)
-        ->setUsername($smtp_username)
-        ->setPassword($smtp_password);
+            ->setEncryption($smtp_encryption)
+            ->setUsername($smtp_username)
+            ->setPassword($smtp_password);
 
         $this->client = new Swift_Mailer($transport);
     }
@@ -92,9 +92,9 @@ class MailClient
         }
 
         $this->message = (new Swift_Message($subject))
-        ->setFrom($from)
-        ->setTo($to)
-        ->setBody($body);
+            ->setFrom($from)
+            ->setTo($to)
+            ->setBody($body);
 
         return $this;
     }
