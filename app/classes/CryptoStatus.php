@@ -263,17 +263,18 @@ class CryptoStatus {
    */
   protected function deleteTweets(array $tweet_ids) {
     $deleted_counter = 0;
+    $failed_deletes = [];
 
     foreach ($tweet_ids as $tweet_id) {
-      $deleted = $this->twitter_client->deleteTweet($tweet_id);
-
-      if ($deleted) {
+      if ($this->twitter_client->deleteTweet($tweet_id)) {
         $deleted_counter++;
+      } else {
+        $failed_deletes[] = $tweet_id;
       }
     }
 
     if ($deleted_counter != count($tweet_ids)) {
-      throw new CryptoStatusException('Deleting Tweets failed', 2);
+      throw new CryptoStatusException('Failed to delete ' . implode(', ', $failed_deletes), 2);
     }
   }
 
