@@ -96,6 +96,9 @@ class CryptoStatus {
    * Run the application
    */
   public function run() {
+
+    $this->init();
+
     $this->dataset = $this->getDataset();
 
     $this->formatData();

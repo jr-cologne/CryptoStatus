@@ -31,8 +31,5 @@ $bugsnag_client = new BugsnagClient;
 
 $app = new CryptoStatus;
 
-// initialize app
-$app->init();
-
-// run app
+// initialize and run the app
 $app->run();
