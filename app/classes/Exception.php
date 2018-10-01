@@ -16,16 +16,19 @@ declare(strict_types=1);
  *
  * ________________________________________________________________________________
  *
- * MailClientException.php
+ * CryptoStatus.php
  *
- * The Exception of the Mail client
- * 
+ * The main class of the application.
+ *
  */
 
-namespace CryptoStatus\Exceptions;
+namespace CryptoStatus;
 
-use \CryptoStatus\Exception;
+/**
+ * abstract class for all CryptoStatus relevant exceptions so they can be caught separately from system exceptions
+ * @package CryptoStatus
+ */
+abstract class Exception extends \Exception
+{
 
-class MailClientException extends Exception {
-  
 }

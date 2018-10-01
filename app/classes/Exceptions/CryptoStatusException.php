@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
@@ -23,7 +24,7 @@
 
 namespace CryptoStatus\Exceptions;
 
-use \Exception;
+use \CryptoStatus\Exception;
 
 class CryptoStatusException extends Exception {
   
