@@ -18,13 +18,14 @@
  * TwitterClientException.php
  *
  * The Exception of the Twitter client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class TwitterClientException extends Exception {
+class TwitterClientException extends Exception
+{
   
 }

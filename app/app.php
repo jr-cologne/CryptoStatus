@@ -18,18 +18,18 @@
  * app.php
  *
  * The main application file
- * 
+ *
  */
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use CryptoStatus\BugsnagClient;
 use CryptoStatus\CryptoStatus;
 
 // initialize error handling
-$bugsnag_client = new BugsnagClient;
+$bugsnag_client = new BugsnagClient();
 
-$app = new CryptoStatus;
+$app = new CryptoStatus();
 
 // initialize and run the app
 $app->run();

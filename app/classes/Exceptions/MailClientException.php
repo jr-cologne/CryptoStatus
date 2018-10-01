@@ -18,13 +18,14 @@
  * MailClientException.php
  *
  * The Exception of the Mail client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class MailClientException extends Exception {
+class MailClientException extends Exception
+{
   
 }
