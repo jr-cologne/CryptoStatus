@@ -303,10 +303,10 @@ class CryptoStatus
     protected function sendNotificationMail() : bool
     {
         return $this->mail_client->message([
-        'from' => getenv(NOTIFICATION_MAIL_FROM),
-        'to' => getenv(NOTIFICATION_MAIL_TO),
-        'subject' => NOTIFICATION_MAIL_SUBJECT,
-        'body' => NOTIFICATION_MAIL_BODY
+            'from' => getenv(NOTIFICATION_MAIL_FROM),
+            'to' => getenv(NOTIFICATION_MAIL_TO),
+            'subject' => NOTIFICATION_MAIL_SUBJECT,
+            'body' => NOTIFICATION_MAIL_BODY
         ])->send();
     }
 
