@@ -18,7 +18,7 @@
  * config.php
  *
  * The Crypto Status config file
- * 
+ *
  */
 
 const TWITTER_API_CONSUMER_KEY = 'TWITTER_API_CONSUMER_KEY';
@@ -44,4 +44,3 @@ const SMTP_PORT = '25';
 const SMTP_ENCRYPTION = 'tls';
 const SMTP_USERNAME = 'SMTP_USERNAME';
 const SMTP_PASSWORD = 'SMTP_PASSWORD';
-

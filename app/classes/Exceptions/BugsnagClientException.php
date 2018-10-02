@@ -18,13 +18,14 @@
  * BugsnagClientException.php
  *
  * The Exception of the Bugsnag client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class BugsnagClientException extends Exception {
+class BugsnagClientException extends Exception
+{
   
 }

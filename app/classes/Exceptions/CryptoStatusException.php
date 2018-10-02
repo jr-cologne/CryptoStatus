@@ -18,13 +18,14 @@
  * CryptoStatusException.php
  *
  * The Exception of the CryptoStatus class
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class CryptoStatusException extends Exception {
+class CryptoStatusException extends Exception
+{
   
 }

@@ -18,35 +18,39 @@
  * BugsnagClient.php
  *
  * The client for handling errors with Bugsnag.
- * 
+ *
  */
 
 namespace CryptoStatus;
 
-class BugsnagClient {
+use CryptoStatus\Exceptions\BugsnagClientException;
+
+class BugsnagClient
+{
 
   /**
    * Constructor, initialization of Bugsnag's error handler
    */
-  public function __construct() {
-    $bugsnag = \Bugsnag\Client::make($this->getApiKey());
-    \Bugsnag\Handler::register($bugsnag);
-  }
+    public function __construct()
+    {
+        $bugsnag = \Bugsnag\Client::make($this->getApiKey());
+        \Bugsnag\Handler::register($bugsnag);
+    }
 
   /**
    * Get API key from environment variables
-   * 
+   *
    * @return string
    * @throws BugsnagClientException if Bugsnag API key could not be retrieved
    */
-  protected function getApiKey() : string {
-    $api_key = getenv(BUGSNAG_API_KEY);
+    protected function getApiKey() : string
+    {
+        $api_key = getenv(BUGSNAG_API_KEY);
     
-    if (empty($api_key)) {
-      throw new BugsnagClientException("Could not get Bugsnag API Key", 1);
+        if (empty($api_key)) {
+            throw new BugsnagClientException("Could not get Bugsnag API Key", 1);
+        }
+
+        return $api_key;
     }
-
-    return $api_key;
-  }
-
 }

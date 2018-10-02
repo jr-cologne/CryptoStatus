@@ -18,13 +18,14 @@
  * CurlClientException.php
  *
  * The Exception of the cURL client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
 use \Exception;
 
-class CurlClientException extends Exception {
+class CurlClientException extends Exception
+{
   
 }
