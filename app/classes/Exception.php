@@ -16,17 +16,19 @@ declare(strict_types=1);
  *
  * ________________________________________________________________________________
  *
- * CryptoClientException.php
+ * CryptoStatus.php
  *
- * The Exception of the Crypto client
+ * The main class of the application.
  *
  */
 
-namespace CryptoStatus\Exceptions;
+namespace CryptoStatus;
 
-use \CryptoStatus\Exception;
-
-class CryptoClientException extends Exception
+/**
+ * abstract class for all CryptoStatus relevant exceptions so they can be caught separately from system exceptions
+ * @package CryptoStatus
+ */
+abstract class Exception extends \Exception
 {
-  
+
 }
