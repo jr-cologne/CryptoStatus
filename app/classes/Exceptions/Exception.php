@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -16,18 +17,14 @@ declare(strict_types=1);
  *
  * ________________________________________________________________________________
  *
- * CryptoStatus.php
+ * Exception.php
  *
- * The main class of the application.
+ * The main Exception class of the application.
  *
  */
 
-namespace CryptoStatus;
+namespace CryptoStatus\Exceptions;
 
-/**
- * abstract class for all CryptoStatus relevant exceptions so they can be caught separately from system exceptions
- * @package CryptoStatus
- */
 abstract class Exception extends \Exception
 {
 

@@ -99,7 +99,6 @@ class CryptoStatus
    */
     public function run()
     {
-
         $this->init();
 
         $this->dataset = $this->getDataset();
@@ -245,12 +244,12 @@ class CryptoStatus
         for ($i = 0; $i < 3; $i++) {
             if ($last_tweet_id) {
                 $tweet = $this->twitter_client->postTweet([
-                'status' => '@' . TWITTER_SCREENNAME . ' ' . $tweets[$i],
-                'in_reply_to_status_id' => $last_tweet_id
+                    'status' => '@' . TWITTER_SCREENNAME . ' ' . $tweets[$i],
+                    'in_reply_to_status_id' => $last_tweet_id
                 ], [ 'id' ]);
             } else {
                 $tweet = $this->twitter_client->postTweet([
-                'status' => $tweets[$i]
+                    'status' => $tweets[$i]
                 ], [ 'id' ]);
             }
 
@@ -311,22 +310,20 @@ class CryptoStatus
     }
 
     /**
+     * Checks whether all necessary fields are set in the given dataset
+     * 
      * @param array $data
      * @return bool
      */
-    private function necessaryFieldsAreSet(array $data): bool
+    private function necessaryFieldsAreSet(array $data) : bool
     {
-        if (isset(
+        return isset(
             $data['rank'],
             $data['symbol'],
             $data['name'],
             $data['price_usd'],
             $data['price_btc'],
             $data['percent_change_1h'])
-        ) {
-            return true;
-        }
-
-        return false;
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -24,7 +25,7 @@ declare(strict_types=1);
 
 namespace CryptoStatus\Exceptions;
 
-use \CryptoStatus\Exception;
+use \CryptoStatus\Exceptions\Exception;
 
 class TwitterClientException extends Exception
 {

@@ -42,9 +42,9 @@ class CryptoClient
    * @var array $options
    */
     protected $options = [
-    'api' => null,
-    'endpoint' => null,
-    'params' => []
+        'api' => null,
+        'endpoint' => null,
+        'params' => []
     ];
 
   /**
