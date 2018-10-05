@@ -323,7 +323,7 @@ class CryptoStatus
             $data['name'],
             $data['price_usd'],
             $data['price_btc'],
-            $data['percent_change_1h'])
+            $data['percent_change_1h']
         );
     }
 }
