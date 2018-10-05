@@ -17,17 +17,15 @@ declare(strict_types=1);
  *
  * ________________________________________________________________________________
  *
- * CryptoStatusException.php
+ * Exception.php
  *
- * The Exception of the CryptoStatus class
+ * The main Exception class of the application.
  *
  */
 
 namespace CryptoStatus\Exceptions;
 
-use \CryptoStatus\Exceptions\Exception;
-
-class CryptoStatusException extends Exception
+abstract class Exception extends \Exception
 {
-  
+
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
@@ -18,13 +20,14 @@
  * CurlClientException.php
  *
  * The Exception of the cURL client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
-use \Exception;
+use \CryptoStatus\Exceptions\Exception;
 
-class CurlClientException extends Exception {
+class CurlClientException extends Exception
+{
   
 }

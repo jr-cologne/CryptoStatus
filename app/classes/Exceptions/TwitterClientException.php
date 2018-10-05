@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
@@ -18,13 +20,14 @@
  * TwitterClientException.php
  *
  * The Exception of the Twitter client
- * 
+ *
  */
 
 namespace CryptoStatus\Exceptions;
 
-use \Exception;
+use \CryptoStatus\Exceptions\Exception;
 
-class TwitterClientException extends Exception {
+class TwitterClientException extends Exception
+{
   
 }
