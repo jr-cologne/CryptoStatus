@@ -28,21 +28,23 @@ use CryptoStatus\Exceptions\BugsnagClientException;
 class BugsnagClient
 {
 
-  /**
-   * Constructor, initialization of Bugsnag's error handler
-   */
+    /**
+     * Constructor, initialization of Bugsnag's error handler
+     *
+     * @throws BugsnagClientException
+     */
     public function __construct()
     {
         $bugsnag = \Bugsnag\Client::make($this->getApiKey());
         \Bugsnag\Handler::register($bugsnag);
     }
 
-  /**
-   * Get API key from environment variables
-   *
-   * @return string
-   * @throws BugsnagClientException if Bugsnag API key could not be retrieved
-   */
+    /**
+     * Get API key from environment variables
+     *
+     * @return string
+     * @throws BugsnagClientException if Bugsnag API key could not be retrieved
+     */
     protected function getApiKey() : string
     {
         $api_key = getenv(BUGSNAG_API_KEY);

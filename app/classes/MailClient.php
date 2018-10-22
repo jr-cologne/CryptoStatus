@@ -32,27 +32,27 @@ use \Swift_Message;
 class MailClient
 {
 
-  /**
-   * The Swift_Mailer instance (a mailing library for PHP)
-   *
-   * @var Swift_Mailer $client
-   */
+    /**
+     * The Swift_Mailer instance (a mailing library for PHP)
+     *
+     * @var Swift_Mailer $client
+     */
     protected $client;
 
-  /**
-   * The created Swift_Message instance
-   *
-   * @var Swift_Message $message
-   */
+    /**
+     * The created Swift_Message instance
+     *
+     * @var Swift_Message $message
+     */
     protected $message;
 
-  /**
-   * Constructor, initialize mail client, authenticate with SMTP server
-   *
-   * @param array $config SMTP server config including 'smtp_server', 'smtp_port',
-   *                      'smtp_encryption', 'smtp_username', and 'smtp_password'
-   * @throws MailClientException if some configs are missing/invalid
-   */
+    /**
+     * Constructor, initialize mail client, authenticate with SMTP server
+     *
+     * @param array $config SMTP server config including 'smtp_server', 'smtp_port',
+     *                      'smtp_encryption', 'smtp_username', and 'smtp_password'
+     * @throws MailClientException if some configs are missing/invalid
+     */
     public function __construct(array $config)
     {
         $smtp_server = $config['smtp_server'] ?? null;
@@ -73,13 +73,13 @@ class MailClient
         $this->client = new Swift_Mailer($transport);
     }
 
-  /**
-   * Set message settings
-   *
-   * @param  array $settings The message settings including 'from', 'to', 'subject', and 'body'
-   * @return self
-   * @throws MailClientException if message settings are invalid/missing
-   */
+    /**
+     * Set message settings
+     *
+     * @param  array $settings The message settings including 'from', 'to', 'subject', and 'body'
+     * @return self
+     * @throws MailClientException if message settings are invalid/missing
+     */
     public function message(array $settings) : self
     {
         $from = $settings['from'] ?? null;
@@ -99,11 +99,11 @@ class MailClient
         return $this;
     }
 
-  /**
-   * Send mail
-   *
-   * @return bool
-   */
+    /**
+     * Send mail
+     *
+     * @return bool
+     */
     public function send() : bool
     {
         if ($this->message && $this->client->send($this->message) === 1) {

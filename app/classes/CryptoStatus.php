@@ -25,64 +25,63 @@ namespace CryptoStatus;
 
 use CryptoStatus\Exceptions\CryptoStatusException;
 
-use CryptoStatus\TwitterClient;
-use CryptoStatus\CurlClient;
-use CryptoStatus\CryptoClient;
-use CryptoStatus\MailClient;
-
 use Codebird\Codebird;
 
 class CryptoStatus
 {
 
-  /**
-   * The Twitter client instance
-   *
-   * @var TwitterClient $twitter_client
-   */
+    /**
+     * The Twitter client instance
+     *
+     * @var TwitterClient $twitter_client
+     */
     protected $twitter_client;
 
-  /**
-   * The Crypto client instance
-   *
-   * @var CryptoClient $crypto_client
-   */
+    /**
+     * The Crypto client instance
+     *
+     * @var CryptoClient $crypto_client
+     */
     protected $crypto_client;
 
-  /**
-   * The Mail client instance
-   *
-   * @var MailClient $mail_client
-   */
+    /**
+     * The Mail client instance
+     *
+     * @var MailClient $mail_client
+     */
     protected $mail_client;
 
-  /**
-   * The Crypto data
-   *
-   * @var array $dataset
-   */
+    /**
+     * The Crypto data
+     *
+     * @var array $dataset
+     */
     protected $dataset;
 
-  /**
-   * The IDs of the Tweets which need to be deleted because of an error
-   *
-   * @var array $failed_tweets
-   */
+    /**
+     * The IDs of the Tweets which need to be deleted because of an error
+     *
+     * @var array $failed_tweets
+     */
     protected $failed_tweets = [];
 
-  /**
-   * Initialize application
-   */
+    /**
+     * Initialize application
+     *
+     * @throws Exceptions\TwitterClientException
+     * @throws Exceptions\CryptoClientException
+     * @throws Exceptions\MailClientException
+     */
     public function init()
     {
         $this->twitter_client = new TwitterClient(Codebird::getInstance());
 
         $this->crypto_client = new CryptoClient(new CurlClient(), [
-        'api' => CRYPTO_API,
-        'endpoint' => CRYPTO_API_ENDPOINT,
-        'params' => [
-        'limit' => CRYPTO_API_LIMIT
-        ]
+            'api' => CRYPTO_API,
+            'endpoint' => CRYPTO_API_ENDPOINT,
+            'params' => [
+                'limit' => CRYPTO_API_LIMIT
+            ]
         ]);
 
         $this->mail_client = new MailClient([
@@ -94,9 +93,15 @@ class CryptoStatus
         ]);
     }
 
-  /**
-   * Run the application
-   */
+    /**
+     * Run the application
+     *
+     * @throws CryptoStatusException
+     * @throws Exceptions\CryptoClientException
+     * @throws Exceptions\CurlClientException
+     * @throws Exceptions\MailClientException
+     * @throws Exceptions\TwitterClientException
+     */
     public function run()
     {
         $this->init();
@@ -113,21 +118,23 @@ class CryptoStatus
         }
     }
 
-  /**
-   * Get the Crypto data
-   *
-   * @return array
-   */
+    /**
+     * Get the Crypto data
+     *
+     * @return array
+     * @throws Exceptions\CryptoClientException
+     * @throws Exceptions\CurlClientException
+     */
     protected function getDataset() : array
     {
         return $this->crypto_client->getData();
     }
 
-  /**
-   * Format the Crypto data to an array of strings
-   *
-   * @throws CryptoStatusException if Crypto data is missing
-   */
+    /**
+     * Format the Crypto data to an array of strings
+     *
+     * @throws CryptoStatusException if Crypto data is missing
+     */
     protected function formatData()
     {
         $this->dataset = array_map(function (array $data) {
@@ -149,12 +156,12 @@ class CryptoStatus
         }, $this->dataset);
     }
   
-  /**
-   * Convert string to camel case notation.
-   *
-   * @param string $str
-   * @return string
-   */
+    /**
+     * Convert string to camel case notation.
+     *
+     * @param string $str
+     * @return string
+     */
     protected function camelCase(string $str) : string
     {
         $camel_case_str = '';
@@ -175,12 +182,12 @@ class CryptoStatus
         return $camel_case_str;
     }
   
-  /**
-   * Remove trailing zeros after decimal point from number
-   *
-   * @param string $number
-   * @return string
-   */
+    /**
+     * Remove trailing zeros after decimal point from number
+     *
+     * @param string $number
+     * @return string
+     */
     protected function removeTrailingZeros(string $number) : string
     {
         $number_arr = array_reverse(str_split($number));
@@ -202,11 +209,11 @@ class CryptoStatus
         return $number;
     }
 
-  /**
-   * Create the Tweets with Crypto data and return them as an array
-   *
-   * @return array
-   */
+    /**
+     * Create the Tweets with Crypto data and return them as an array
+     *
+     * @return array
+     */
     protected function createTweets() : array
     {
         $tweets = [];
@@ -230,12 +237,12 @@ class CryptoStatus
         return $tweets;
     }
 
-  /**
-   * Post the specified Tweets
-   *
-   * @param array $tweets The Tweets to post
-   * @return bool
-   */
+    /**
+     * Post the specified Tweets
+     *
+     * @param array $tweets The Tweets to post
+     * @return bool
+     */
     protected function postTweets(array $tweets) : bool
     {
         $last_tweet_id = null;
@@ -269,12 +276,12 @@ class CryptoStatus
         }
     }
 
-  /**
-   * Delete the specified Tweets
-   *
-   * @param array $tweet_ids The IDs of the Tweets to delete
-   * @throws CryptoStatusException if Tweets could not be deleted
-   */
+    /**
+     * Delete the specified Tweets
+     *
+     * @param array $tweet_ids The IDs of the Tweets to delete
+     * @throws CryptoStatusException if Tweets could not be deleted
+     */
     protected function deleteTweets(array $tweet_ids)
     {
         $deleted_counter = 0;
@@ -311,7 +318,7 @@ class CryptoStatus
 
     /**
      * Checks whether all necessary fields are set in the given dataset
-     * 
+     *
      * @param array $data
      * @return bool
      */

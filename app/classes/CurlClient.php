@@ -28,35 +28,35 @@ use CryptoStatus\Exceptions\CurlClientException;
 class CurlClient
 {
 
-  /**
-   * The cURL handle of the current cURL session
-   *
-   * @var resource $ch
-   */
+    /**
+     * The cURL handle of the current cURL session
+     *
+     * @var resource $ch
+     */
     protected $ch;
 
-  /**
-   * The result of a performed cURL request
-   *
-   * @var mixed $result
-   */
+    /**
+     * The result of a performed cURL request
+     *
+     * @var mixed $result
+     */
     protected $result;
 
-  /**
-   * Constructor, initialize cURL
-   */
+    /**
+     * Constructor, initialize cURL
+     */
     public function __construct()
     {
         $this->ch = curl_init();
     }
 
-  /**
-   * Perform a cURL request and retrieve the result
-   *
-   * @param string $url The URL for the cURL request
-   * @return self
-   * @throws CurlClientException if cURL request failed
-   */
+    /**
+     * Perform a cURL request and retrieve the result
+     *
+     * @param string $url The URL for the cURL request
+     * @return self
+     * @throws CurlClientException if cURL request failed
+     */
     public function get(string $url) : self
     {
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
@@ -72,13 +72,13 @@ class CurlClient
         return $this;
     }
 
-  /**
-   * Json-decode result/return data of cURL request
-   *
-   * @param bool $array = true Return json-decoded data as array
-   * @return array (default) or object
-   * @throws CurlClientException if cURL return data could not be json-decoded
-   */
+    /**
+     * Json-decode result/return data of cURL request
+     *
+     * @param bool $array = true Return json-decoded data as array
+     * @return array (default) or object
+     * @throws CurlClientException if cURL return data could not be json-decoded
+     */
     public function json(bool $array = true)
     {
         $json = json_decode($this->result, $array);
@@ -90,13 +90,13 @@ class CurlClient
         return $json;
     }
 
-  /**
-   * Sanitize and validate URL for cURL request
-   *
-   * @param string $url The URL for the cURL request
-   * @return string
-   * @throws CurlClientException if an invalid URL is given
-   */
+    /**
+     * Sanitize and validate URL for cURL request
+     *
+     * @param string $url The URL for the cURL request
+     * @return string
+     * @throws CurlClientException if an invalid URL is given
+     */
     protected function sanitizeUrl(string $url) : string
     {
         $url = filter_var($url, FILTER_SANITIZE_URL);

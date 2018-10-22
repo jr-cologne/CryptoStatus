@@ -25,9 +25,7 @@ declare(strict_types=1);
 
 namespace CryptoStatus\Exceptions;
 
-use \CryptoStatus\Exceptions\Exception;
-
 class TwitterClientException extends Exception
 {
-  
+
 }

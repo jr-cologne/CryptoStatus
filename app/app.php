@@ -23,8 +23,10 @@
 
 require_once 'vendor/autoload.php';
 
-use CryptoStatus\BugsnagClient;
-use CryptoStatus\CryptoStatus;
+use CryptoStatus\{
+    BugsnagClient,
+    CryptoStatus
+};
 
 // initialize error handling
 $bugsnag_client = new BugsnagClient();

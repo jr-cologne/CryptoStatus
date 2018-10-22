@@ -23,37 +23,36 @@
 
 namespace CryptoStatus;
 
-use CryptoStatus\CurlClient;
 use CryptoStatus\Exceptions\CryptoClientException;
 
 class CryptoClient
 {
 
-  /**
-   * The cURL client instance
-   *
-   * @var CurlClient $curl_client
-   */
+    /**
+     * The cURL client instance
+     *
+     * @var CurlClient $curl_client
+     */
     protected $curl_client;
 
-  /**
-   * The Crypto client options
-   *
-   * @var array $options
-   */
+    /**
+     * The Crypto client options
+     *
+     * @var array $options
+     */
     protected $options = [
         'api' => null,
         'endpoint' => null,
         'params' => []
     ];
 
-  /**
-   * Constructor, initialization
-   *
-   * @param CurlClient $curl_client
-   * @param array $options
-   * @throws CryptoClientException if no API and/or API Endpoint is specified in options
-   */
+    /**
+     * Constructor, initialization
+     *
+     * @param CurlClient $curl_client
+     * @param array $options
+     * @throws CryptoClientException if no API and/or API Endpoint is specified in options
+     */
     public function __construct(CurlClient $curl_client, array $options = [])
     {
         $this->curl_client = $curl_client;
@@ -65,22 +64,24 @@ class CryptoClient
         }
     }
 
-  /**
-   * Get Crypto data
-   *
-   * @return array
-   */
+    /**
+     * Get Crypto data
+     *
+     * @return array
+     * @throws CryptoClientException
+     * @throws Exceptions\CurlClientException
+     */
     public function getData() : array
     {
         return $this->curl_client->get($this->getRequestUrl())->json();
     }
 
-  /**
-   * Get request URL for Crypto API call
-   *
-   * @return string
-   * @throws CryptoClientException if no API and/or API Endpoint is specified
-   */
+    /**
+     * Get request URL for Crypto API call
+     *
+     * @return string
+     * @throws CryptoClientException if no API and/or API Endpoint is specified
+     */
     protected function getRequestUrl() : string
     {
         if (empty($this->options['api']) || !isset($this->options['endpoint'])) {
