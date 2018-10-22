@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.3.0
+ * @version v0.3.1
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -25,9 +25,7 @@ declare(strict_types=1);
 
 namespace CryptoStatus\Exceptions;
 
-use \CryptoStatus\Exceptions\Exception;
-
 class CryptoClientException extends Exception
 {
-  
+
 }

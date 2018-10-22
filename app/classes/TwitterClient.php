@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.3.0
+ * @version v0.3.1
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -30,26 +30,26 @@ use Codebird\Codebird;
 class TwitterClient
 {
 
-  /**
-   * A Codebird instance (a Twitter client library for PHP)
-   *
-   * @var Codebird $client
-   */
+    /**
+     * A Codebird instance (a Twitter client library for PHP)
+     *
+     * @var Codebird $client
+     */
     protected $client;
 
-  /**
-   * The Twitter API keys
-   *
-   * @var array $api_keys
-   */
+    /**
+     * The Twitter API keys
+     *
+     * @var array $api_keys
+     */
     protected $api_keys;
 
-  /**
-   * Constructor, initialization and authentication with Twitter API
-   *
-   * @param Codebird $twitter_client A Cordbird instance
-   * @throws TwitterClientException if authentication with Twitter API failed
-   */
+    /**
+     * Constructor, initialization and authentication with Twitter API
+     *
+     * @param Codebird $twitter_client A Codebird instance
+     * @throws TwitterClientException if authentication with Twitter API failed
+     */
     public function __construct(Codebird $twitter_client)
     {
         $this->client = $twitter_client;
@@ -61,19 +61,21 @@ class TwitterClient
         }
     }
 
-  /**
-   * Post a Tweet
-   *
-   * @param  array $params Parameters for Twitter API method statuses/update
-   * @param  array $return Data to return from Twitter API reply
-   * @return boolean (default) or array (when $return is specified)
-   */
+    /**
+     * Post a Tweet
+     *
+     * @param  array $params Parameters for Twitter API method statuses/update
+     * @param  array $return Data to return from Twitter API reply
+     * @return mixed boolean (default) or array (when $return is specified)
+     */
     public function postTweet(array $params, array $return = [])
     {
         $reply = $this->client->statuses_update($params);
     
         if ($reply->httpstatus == 200) {
             if (!empty($return)) {
+                $return_data = [];
+
                 foreach ($return as $value) {
                     $return_data[$value] = $reply->{$value};
                 }
@@ -87,12 +89,12 @@ class TwitterClient
         return false;
     }
 
-  /**
-   * Delete a Tweet
-   *
-   * @param string $id ID of the Tweet to delete
-   * @return bool
-   */
+    /**
+     * Delete a Tweet
+     *
+     * @param string $id ID of the Tweet to delete
+     * @return bool
+     */
     public function deleteTweet(string $id) : bool
     {
         $reply = $this->client->statuses_destroy_ID([ 'id' => $id ]);
@@ -104,12 +106,12 @@ class TwitterClient
         return false;
     }
 
-  /**
-   * Get API keys from environment variables
-   *
-   * @return array
-   * @throws TwitterClientException if Twitter API keys could not be retrieved
-   */
+    /**
+     * Get API keys from environment variables
+     *
+     * @return array
+     * @throws TwitterClientException if Twitter API keys could not be retrieved
+     */
     protected function getApiKeys() : array
     {
         $api_keys = [
@@ -130,11 +132,11 @@ class TwitterClient
         return $api_keys;
     }
 
-  /**
-   * Authenticate with Twitter API
-   *
-   * @return bool
-   */
+    /**
+     * Authenticate with Twitter API
+     *
+     * @return bool
+     */
     protected function authenticate() : bool
     {
         $this->client::setConsumerKey($this->api_keys['consumer_key'], $this->api_keys['consumer_secret']);

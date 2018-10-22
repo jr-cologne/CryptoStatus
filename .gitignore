@@ -48,3 +48,6 @@ Temporary Items
 
 # Exclude Composer stuff
 vendor
+
+# Exclude PHPStorm stuff
+.idea
