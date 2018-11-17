@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2018 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.4.1
+ * @version v0.5.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -80,16 +80,18 @@ class CryptoStatus
             'api' => CRYPTO_API,
             'endpoint' => CRYPTO_API_ENDPOINT,
             'params' => [
-                'limit' => CRYPTO_API_LIMIT
+                'vs_currency' => CRYPTO_API_CURRENCY,
+                'order' => CRYPTO_API_ORDER,
+                'per_page' => CRYPTO_API_LIMIT
             ]
         ]);
 
         $this->mail_client = new MailClient([
-        'smtp_server' => SMTP_SERVER,
-        'smtp_port' => SMTP_PORT,
-        'smtp_encryption' => SMTP_ENCRYPTION,
-        'smtp_username' => getenv(SMTP_USERNAME),
-        'smtp_password' => getenv(SMTP_PASSWORD)
+            'smtp_server' => SMTP_SERVER,
+            'smtp_port' => SMTP_PORT,
+            'smtp_encryption' => SMTP_ENCRYPTION,
+            'smtp_username' => getenv(SMTP_USERNAME),
+            'smtp_password' => getenv(SMTP_PASSWORD)
         ]);
     }
 
@@ -139,17 +141,15 @@ class CryptoStatus
     {
         $this->dataset = array_map(function (array $data) {
             if ($this->necessaryFieldsAreSet($data)) {
-                $data['name'] = $this->camelCase($data['name']);
-                $data['price_usd'] = $this->removeTrailingZeros(number_format($data['price_usd'], 2));
-                $data['price_btc'] = $this->removeTrailingZeros(number_format($data['price_btc'], 6));
+                $data['id'] = $this->camelCase($data['id']);
+                $data['current_price'] = $this->formatNumber($data['current_price']);
+                $data['price_change_percentage_24h'] = $this->formatNumber($data['price_change_percentage_24h']);
         
-                return "#{$data['rank']} "
+                return "#{$data['market_cap_rank']} "
                     . "#{$data['symbol']} "
-                    . "(#{$data['name']}): "
-                    . "{$data['price_usd']} "
-                    . "USD | {$data['price_btc']} "
-                    . "BTC | {$data['percent_change_1h']}% "
-                    . "1h";
+                    . "(#{$data['id']}): "
+                    . "{$data['current_price']} USD | "
+                    . "{$data['price_change_percentage_24h']}% 24h";
             }
 
             throw new CryptoStatusException('Crypto data is missing', 1);
@@ -168,7 +168,7 @@ class CryptoStatus
         $capitalize = false;
     
         foreach (str_split($str) as $char) {
-            if (ctype_space($char)) {
+            if (ctype_space($char) || $char == '-') {
                 $capitalize = true;
                 continue;
             } elseif ($capitalize) {
@@ -180,6 +180,28 @@ class CryptoStatus
         }
     
         return $camel_case_str;
+    }
+
+    /**
+     * Format number
+     *
+     * @param string $number
+     * @return string
+     */
+    protected function formatNumber(string $number) : string
+    {
+        return $this->removeTrailingZeros($this->twoDecimals($number));
+    }
+
+    /**
+     * Format number to use only two decimals
+     *
+     * @param string $number
+     * @return string
+     */
+    protected function twoDecimals(string $number) : string
+    {
+        return number_format($number, 2);
     }
   
     /**
@@ -325,12 +347,11 @@ class CryptoStatus
     private function necessaryFieldsAreSet(array $data) : bool
     {
         return isset(
-            $data['rank'],
+            $data['market_cap_rank'],
             $data['symbol'],
-            $data['name'],
-            $data['price_usd'],
-            $data['price_btc'],
-            $data['percent_change_1h']
+            $data['id'],
+            $data['current_price'],
+            $data['price_change_percentage_24h']
         );
     }
 }
