@@ -99,12 +99,14 @@ class CryptoClient
         foreach ($this->options['params'] as $key => $value) {
             if (isset($this->options['params'][$key])) {
                 if ($first_param) {
+                    $url .= '?';
+
                     $first_param = false;
                 } else {
-                    $url .= urlencode('&');
+                    $url .= '&';
                 }
 
-                $url .= "?{$key}={$value}";
+                $url .= "{$key}={$value}";
             }
         }
 

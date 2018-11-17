@@ -28,8 +28,10 @@ const TWITTER_API_ACCESS_TOKEN_SECRET = 'TWITTER_API_ACCESS_TOKEN_SECRET';
 
 const TWITTER_SCREENNAME = 'status_crypto';
 
-const CRYPTO_API = 'https://api.coinmarketcap.com/v1/';
-const CRYPTO_API_ENDPOINT = 'ticker/';
+const CRYPTO_API = 'https://api.coingecko.com/api/v3/';
+const CRYPTO_API_ENDPOINT = 'coins/markets';
+const CRYPTO_API_CURRENCY = 'usd';
+const CRYPTO_API_ORDER = 'market_cap_desc';
 const CRYPTO_API_LIMIT = 10;
 
 const BUGSNAG_API_KEY = 'BUGSNAG_API_KEY';

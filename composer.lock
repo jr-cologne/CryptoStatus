@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bugsnag/bugsnag",
-            "version": "v3.14.1",
+            "version": "v3.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bugsnag/bugsnag-php.git",
-                "reference": "94474e309cebec88915fa9d4cf1e5355458f35aa"
+                "reference": "c251f20bcd07100a2106db357f5b277ec18bad3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bugsnag/bugsnag-php/zipball/94474e309cebec88915fa9d4cf1e5355458f35aa",
-                "reference": "94474e309cebec88915fa9d4cf1e5355458f35aa",
+                "url": "https://api.github.com/repos/bugsnag/bugsnag-php/zipball/c251f20bcd07100a2106db357f5b277ec18bad3e",
+                "reference": "c251f20bcd07100a2106db357f5b277ec18bad3e",
                 "shasum": ""
             },
             "require": {
@@ -27,7 +27,7 @@
             },
             "require-dev": {
                 "graham-campbell/testbench-core": "^1.1",
-                "mockery/mockery": "^0.9.4|^1.0",
+                "mockery/mockery": "^0.9.4|~1.1.0",
                 "mtdowling/burgomaster": "dev-master#72151eddf5f0cf101502b94bf5031f9c53501a04",
                 "php-mock/php-mock-phpunit": "^1.1",
                 "phpunit/phpunit": "^4.8|^5.0"
@@ -63,7 +63,7 @@
                 "logging",
                 "tracking"
             ],
-            "time": "2018-07-20T14:35:34+00:00"
+            "time": "2018-11-01T11:29:35+00:00"
         },
         {
             "name": "composer/ca-bundle",
