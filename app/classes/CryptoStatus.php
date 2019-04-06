@@ -3,12 +3,12 @@
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
- * PHP version >= 7.0
+ * PHP version >= 7.1
  *
  * LICENSE: MIT, see LICENSE file for more information
  *
  * @author JR Cologne <kontakt@jr-cologne.de>
- * @copyright 2018 JR Cologne
+ * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
  * @version v0.5.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
@@ -31,6 +31,13 @@ class CryptoStatus
 {
 
     /**
+     * The Config class instance
+     *
+     * @var Config $config
+     */
+    protected $config;
+
+    /**
      * The Twitter client instance
      *
      * @var TwitterClient $twitter_client
@@ -43,13 +50,6 @@ class CryptoStatus
      * @var CryptoClient $crypto_client
      */
     protected $crypto_client;
-
-    /**
-     * The Mail client instance
-     *
-     * @var MailClient $mail_client
-     */
-    protected $mail_client;
 
     /**
      * The Crypto data
@@ -66,32 +66,39 @@ class CryptoStatus
     protected $failed_tweets = [];
 
     /**
+     * CryptoStatus constructor.
+     *
+     * @param Config $config
+     * @throws Exceptions\CryptoClientException
+     * @throws Exceptions\TwitterClientException
+     * @throws Exceptions\ConfigException
+     */
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+
+        $this->init();
+    }
+
+    /**
      * Initialize application
      *
      * @throws Exceptions\TwitterClientException
      * @throws Exceptions\CryptoClientException
-     * @throws Exceptions\MailClientException
+     * @throws Exceptions\ConfigException
      */
     public function init()
     {
-        $this->twitter_client = new TwitterClient(Codebird::getInstance());
+        $this->twitter_client = new TwitterClient(Codebird::getInstance(), $this->config->get('twitter.api'));
 
         $this->crypto_client = new CryptoClient(new CurlClient(), [
-            'api' => CRYPTO_API,
-            'endpoint' => CRYPTO_API_ENDPOINT,
+            'api' => $this->config->get('crypto_api.url'),
+            'endpoint' => $this->config->get('crypto_api.endpoint'),
             'params' => [
-                'vs_currency' => CRYPTO_API_CURRENCY,
-                'order' => CRYPTO_API_ORDER,
-                'per_page' => CRYPTO_API_LIMIT
-            ]
-        ]);
-
-        $this->mail_client = new MailClient([
-            'smtp_server' => SMTP_SERVER,
-            'smtp_port' => SMTP_PORT,
-            'smtp_encryption' => SMTP_ENCRYPTION,
-            'smtp_username' => getenv(SMTP_USERNAME),
-            'smtp_password' => getenv(SMTP_PASSWORD)
+                'vs_currency' => $this->config->get('crypto_api.currency'),
+                'order' => $this->config->get('crypto_api.order'),
+                'per_page' => $this->config->get('crypto_api.limit'),
+            ],
         ]);
     }
 
@@ -101,13 +108,10 @@ class CryptoStatus
      * @throws CryptoStatusException
      * @throws Exceptions\CryptoClientException
      * @throws Exceptions\CurlClientException
-     * @throws Exceptions\MailClientException
-     * @throws Exceptions\TwitterClientException
+     * @throws Exceptions\ConfigException
      */
     public function run()
     {
-        $this->init();
-
         $this->dataset = $this->getDataset();
 
         $this->formatData();
@@ -116,7 +120,7 @@ class CryptoStatus
 
         if (!$this->postTweets($tweets)) {
             $this->deleteTweets($this->failed_tweets);
-            $this->sendNotificationMail();
+            throw new CryptoStatusException('Posting HourlyCryptoStatus failed');
         }
     }
 
@@ -264,6 +268,7 @@ class CryptoStatus
      *
      * @param array $tweets The Tweets to post
      * @return bool
+     * @throws Exceptions\ConfigException
      */
     protected function postTweets(array $tweets) : bool
     {
@@ -273,7 +278,7 @@ class CryptoStatus
         for ($i = 0; $i < 3; $i++) {
             if ($last_tweet_id) {
                 $tweet = $this->twitter_client->postTweet([
-                    'status' => '@' . TWITTER_SCREENNAME . ' ' . $tweets[$i],
+                    'status' => '@' . $this->config->get('twitter.screen_name') . ' ' . $tweets[$i],
                     'in_reply_to_status_id' => $last_tweet_id
                 ], [ 'id' ]);
             } else {
@@ -320,22 +325,6 @@ class CryptoStatus
         if ($deleted_counter != count($tweet_ids)) {
             throw new CryptoStatusException('Failed to delete ' . implode(', ', $failed_deletes), 2);
         }
-    }
-
-    /**
-     * Send notification mail
-     *
-     * @return bool
-     * @throws Exceptions\MailClientException
-     */
-    protected function sendNotificationMail() : bool
-    {
-        return $this->mail_client->message([
-            'from' => getenv(NOTIFICATION_MAIL_FROM),
-            'to' => getenv(NOTIFICATION_MAIL_TO),
-            'subject' => NOTIFICATION_MAIL_SUBJECT,
-            'body' => NOTIFICATION_MAIL_BODY
-        ])->send();
     }
 
     /**

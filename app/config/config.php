@@ -3,12 +3,12 @@
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
- * PHP version >= 7.0
+ * PHP version >= 7.1
  *
  * LICENSE: MIT, see LICENSE file for more information
  *
  * @author JR Cologne <kontakt@jr-cologne.de>
- * @copyright 2018 JR Cologne
+ * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
  * @version v0.5.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
@@ -21,28 +21,21 @@
  *
  */
 
-const TWITTER_API_CONSUMER_KEY = 'TWITTER_API_CONSUMER_KEY';
-const TWITTER_API_CONSUMER_SECRET = 'TWITTER_API_CONSUMER_SECRET';
-const TWITTER_API_ACCESS_TOKEN = 'TWITTER_API_ACCESS_TOKEN';
-const TWITTER_API_ACCESS_TOKEN_SECRET = 'TWITTER_API_ACCESS_TOKEN_SECRET';
-
-const TWITTER_SCREENNAME = 'status_crypto';
-
-const CRYPTO_API = 'https://api.coingecko.com/api/v3/';
-const CRYPTO_API_ENDPOINT = 'coins/markets';
-const CRYPTO_API_CURRENCY = 'usd';
-const CRYPTO_API_ORDER = 'market_cap_desc';
-const CRYPTO_API_LIMIT = 10;
-
-const BUGSNAG_API_KEY = 'BUGSNAG_API_KEY';
-
-const NOTIFICATION_MAIL_FROM = 'NOTIFICATION_MAIL_FROM';
-const NOTIFICATION_MAIL_TO = 'NOTIFICATION_MAIL_TO';
-const NOTIFICATION_MAIL_SUBJECT = 'CryptoStatus error';
-const NOTIFICATION_MAIL_BODY = 'Something went wrong publishing the #HourlyCryptoStatus update!';
-
-const SMTP_SERVER = 'mail.jr-cologne.de';
-const SMTP_PORT = '25';
-const SMTP_ENCRYPTION = 'tls';
-const SMTP_USERNAME = 'SMTP_USERNAME';
-const SMTP_PASSWORD = 'SMTP_PASSWORD';
+return [
+    'twitter' => [
+        'api' => [
+            'consumer_key' => getenv('TWITTER_API_CONSUMER_KEY'),
+            'consumer_secret' => getenv('TWITTER_API_CONSUMER_SECRET'),
+            'access_token' => getenv('TWITTER_API_ACCESS_TOKEN'),
+            'access_token_secret' => getenv('TWITTER_API_ACCESS_TOKEN_SECRET'),
+        ],
+        'screen_name' => 'status_crypto',
+    ],
+    'crypto_api' => [
+        'url' => 'https://api.coingecko.com/api/v3/',
+        'endpoint' => 'coins/markets',
+        'currency' => 'usd',
+        'order' => 'market_cap_desc',
+        'limit' => 10,
+    ],
+];

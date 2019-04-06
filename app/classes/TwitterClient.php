@@ -3,12 +3,12 @@
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
- * PHP version >= 7.0
+ * PHP version >= 7.1
  *
  * LICENSE: MIT, see LICENSE file for more information
  *
  * @author JR Cologne <kontakt@jr-cologne.de>
- * @copyright 2018 JR Cologne
+ * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
  * @version v0.5.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
@@ -48,13 +48,14 @@ class TwitterClient
      * Constructor, initialization and authentication with Twitter API
      *
      * @param Codebird $twitter_client A Codebird instance
+     * @param array $api_keys
      * @throws TwitterClientException if authentication with Twitter API failed
      */
-    public function __construct(Codebird $twitter_client)
+    public function __construct(Codebird $twitter_client, array $api_keys)
     {
         $this->client = $twitter_client;
 
-        $this->api_keys = $this->getApiKeys();
+        $this->setApiKeys($api_keys);
 
         if (!$this->authenticate()) {
             throw new TwitterClientException("Authentication with Twitter API failed", 2);
@@ -107,20 +108,13 @@ class TwitterClient
     }
 
     /**
-     * Get API keys from environment variables
+     * Set Twitter API keys
      *
-     * @return array
+     * @param array $api_keys
      * @throws TwitterClientException if Twitter API keys could not be retrieved
      */
-    protected function getApiKeys() : array
+    protected function setApiKeys(array $api_keys)
     {
-        $api_keys = [
-            'consumer_key' => getenv(TWITTER_API_CONSUMER_KEY),
-            'consumer_secret' => getenv(TWITTER_API_CONSUMER_SECRET),
-            'access_token' => getenv(TWITTER_API_ACCESS_TOKEN),
-            'access_token_secret' => getenv(TWITTER_API_ACCESS_TOKEN_SECRET)
-        ];
-    
         if (empty($api_keys['consumer_key']) ||
             empty($api_keys['consumer_secret']) ||
             empty($api_keys['access_token']) ||
@@ -129,7 +123,7 @@ class TwitterClient
             throw new TwitterClientException("Could not get Twitter API Keys", 1);
         }
 
-        return $api_keys;
+        $this->api_keys = $api_keys;
     }
 
     /**

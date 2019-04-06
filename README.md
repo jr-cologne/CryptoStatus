@@ -4,7 +4,7 @@ A simple Twitter bot application which posts hourly status updates for the top 1
 Twitter Account: [@status_crypto](https://twitter.com/status_crypto)
 
 ## Dependencies
-- [PHP](http://php.net/) (version 7.0 or higher)
+- [PHP](http://php.net/) (version 7.1 or higher)
 - [Codebird Twitter API library](https://github.com/jublonet/codebird-php) (version ^3.1)
 - [SwiftMailer](https://github.com/swiftmailer/swiftmailer) (version ^6.0)
 - [Bugsnag PHP library](https://github.com/bugsnag/bugsnag-php) (version ^3.12)

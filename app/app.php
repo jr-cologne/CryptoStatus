@@ -3,12 +3,12 @@
 /**
  * A simple Twitter bot application which posts hourly status updates for the top 10 cryptocurrencies.
  *
- * PHP version >= 7.0
+ * PHP version >= 7.1
  *
  * LICENSE: MIT, see LICENSE file for more information
  *
  * @author JR Cologne <kontakt@jr-cologne.de>
- * @copyright 2018 JR Cologne
+ * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
  * @version v0.5.0
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
@@ -21,17 +21,17 @@
  *
  */
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-use CryptoStatus\{
-    BugsnagClient,
-    CryptoStatus
-};
+use CryptoStatus\Config;
+use CryptoStatus\CryptoStatus;
+use CryptoStatus\Env;
 
-// initialize error handling
-$bugsnag_client = new BugsnagClient();
+$env = new Env;
+$env->loadEnvVars(__DIR__ . '/../.env');
 
-$app = new CryptoStatus();
+$app = new CryptoStatus(
+    (new Config())->load(__DIR__ . '/config/config.php')
+);
 
-// initialize and run the app
 $app->run();
