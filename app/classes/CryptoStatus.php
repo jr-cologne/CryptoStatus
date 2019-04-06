@@ -339,13 +339,15 @@ class CryptoStatus
     protected function postTweet(string $status, $reply_to = 0)
     {
         $tweet = [
-            'status' => '@' . $this->config->get('twitter.screen_name') . ' ' . $status,
+            'status' => $status,
         ];
 
-        if ($reply_to === 0) {
+        if ($reply_to !== 0) {
             $tweet = array_merge($tweet, [
                 'in_reply_to_status_id' => $reply_to,
             ]);
+
+            $tweet['status'] = '@' . $this->config->get('twitter.screen_name') . ' ' . $tweet['status'];
         }
 
         return $this->twitter_client->postTweet($tweet, [ 'id' ]);
