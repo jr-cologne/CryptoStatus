@@ -94,6 +94,17 @@ class CryptoClient
             return $url;
         }
 
+        return $this->addParamsToRequestUrl($url);
+    }
+
+    /**
+     * Add params to request url
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function addParamsToRequestUrl(string $url) : string
+    {
         $first_param = true;
 
         foreach ($this->options['params'] as $key => $value) {

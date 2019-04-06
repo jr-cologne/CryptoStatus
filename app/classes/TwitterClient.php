@@ -75,19 +75,31 @@ class TwitterClient
     
         if ($reply->httpstatus == 200) {
             if (!empty($return)) {
-                $return_data = [];
-
-                foreach ($return as $value) {
-                    $return_data[$value] = $reply->{$value};
-                }
-
-                return $return_data;
-            } else {
-                return true;
+                return $this->getReturnData($return, $reply);
             }
+
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * Get return data from twitter's api reply
+     *
+     * @param array $return
+     * @param $reply
+     * @return array
+     */
+    protected function getReturnData(array $return, $reply) : array
+    {
+        $return_data = [];
+
+        foreach ($return as $value) {
+            $return_data[$value] = $reply->{$value};
+        }
+
+        return $return_data;
     }
 
     /**

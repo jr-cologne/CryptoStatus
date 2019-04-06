@@ -91,15 +91,7 @@ class CryptoStatus
     {
         $this->twitter_client = new TwitterClient(Codebird::getInstance(), $this->config->get('twitter.api'));
 
-        $this->crypto_client = new CryptoClient(new CurlClient(), [
-            'api' => $this->config->get('crypto_api.url'),
-            'endpoint' => $this->config->get('crypto_api.endpoint'),
-            'params' => [
-                'vs_currency' => $this->config->get('crypto_api.currency'),
-                'order' => $this->config->get('crypto_api.order'),
-                'per_page' => $this->config->get('crypto_api.limit'),
-            ],
-        ]);
+        $this->crypto_client = new CryptoClient(new CurlClient(), $this->getCryptoClientOptions());
     }
 
     /**
@@ -114,12 +106,13 @@ class CryptoStatus
     {
         $this->dataset = $this->getDataset();
 
-        $this->formatData();
+        $this->formatTweetData();
 
         $tweets = $this->createTweets();
 
         if (!$this->postTweets($tweets)) {
             $this->deleteTweets($this->failed_tweets);
+
             throw new CryptoStatusException('Posting HourlyCryptoStatus failed');
         }
     }
@@ -141,23 +134,32 @@ class CryptoStatus
      *
      * @throws CryptoStatusException if Crypto data is missing
      */
-    protected function formatData()
+    protected function formatTweetData()
     {
         $this->dataset = array_map(function (array $data) {
             if ($this->necessaryFieldsAreSet($data)) {
-                $data['id'] = $this->camelCase($data['id']);
-                $data['current_price'] = $this->formatNumber($data['current_price']);
-                $data['price_change_percentage_24h'] = $this->formatNumber($data['price_change_percentage_24h']);
+                $data = $this->getBeautifiedData($data);
         
-                return "#{$data['market_cap_rank']} "
-                    . "#{$data['symbol']} "
-                    . "(#{$data['id']}): "
-                    . "{$data['current_price']} USD | "
-                    . "{$data['price_change_percentage_24h']}% 24h";
+                return $this->getTweetDataString($data);
             }
 
             throw new CryptoStatusException('Crypto data is missing', 1);
         }, $this->dataset);
+    }
+
+    /**
+     * Get beautified data for tweet
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function getBeautifiedData(array $data) : array
+    {
+        $data['id'] = $this->camelCase($data['id']);
+        $data['current_price'] = $this->formatNumber($data['current_price']);
+        $data['price_change_percentage_24h'] = $this->formatNumber($data['price_change_percentage_24h']);
+
+        return $data;
     }
   
     /**
@@ -236,6 +238,21 @@ class CryptoStatus
     }
 
     /**
+     * Get formatted tweet data string
+     *
+     * @param array $data
+     * @return string
+     */
+    protected function getTweetDataString(array $data) : string
+    {
+        return "#{$data['market_cap_rank']} "
+            . "#{$data['symbol']} "
+            . "(#{$data['id']}): "
+            . "{$data['current_price']} USD | "
+            . "{$data['price_change_percentage_24h']}% 24h";
+    }
+
+    /**
      * Create the Tweets with Crypto data and return them as an array
      *
      * @return array
@@ -249,11 +266,12 @@ class CryptoStatus
 
         for ($i = 0; $i < 3; $i++) {
             $tweets[$i] = "#HourlyCryptoStatus (#{$start_rank} to #{$end_rank}):\n\n";
-            $tweets[$i] .= implode("\n\n", array_slice($this->dataset, $start_rank - 1, $length));
+            $tweets[$i] .= implode("\n\n", $this->getDataForSingleTweet($start_rank, $length));
 
             $start_rank += 3;
             $end_rank += 3;
 
+            // last tweet consists of one cryptocurrency more
             if ($i == 1) {
                 $end_rank++;
                 $length++;
@@ -261,6 +279,18 @@ class CryptoStatus
         }
 
         return $tweets;
+    }
+
+    /**
+     * Get data for a single tweet
+     *
+     * @param int $start_rank
+     * @param int $length
+     * @return array
+     */
+    protected function getDataForSingleTweet(int $start_rank, int $length)
+    {
+        return array_slice($this->dataset, $start_rank - 1, $length);
     }
 
     /**
@@ -276,15 +306,10 @@ class CryptoStatus
         $tweet_ids = [];
 
         for ($i = 0; $i < 3; $i++) {
-            if ($last_tweet_id) {
-                $tweet = $this->twitter_client->postTweet([
-                    'status' => '@' . $this->config->get('twitter.screen_name') . ' ' . $tweets[$i],
-                    'in_reply_to_status_id' => $last_tweet_id
-                ], [ 'id' ]);
-            } else {
-                $tweet = $this->twitter_client->postTweet([
-                    'status' => $tweets[$i]
-                ], [ 'id' ]);
+            if ($last_tweet_id) {   // not first tweet
+                $tweet = $this->postTweet($tweets[$i], $last_tweet_id);
+            } else {    // first tweet
+                $tweet = $this->postTweet($tweets[$i]);
             }
 
             if (isset($tweet['id'])) {
@@ -304,6 +329,29 @@ class CryptoStatus
     }
 
     /**
+     * Post a single tweet
+     *
+     * @param string $status
+     * @param int $reply_to
+     * @return mixed
+     * @throws Exceptions\ConfigException
+     */
+    protected function postTweet(string $status, $reply_to = 0)
+    {
+        $tweet = [
+            'status' => '@' . $this->config->get('twitter.screen_name') . ' ' . $status,
+        ];
+
+        if ($reply_to === 0) {
+            $tweet = array_merge($tweet, [
+                'in_reply_to_status_id' => $reply_to,
+            ]);
+        }
+
+        return $this->twitter_client->postTweet($tweet, [ 'id' ]);
+    }
+
+    /**
      * Delete the specified Tweets
      *
      * @param array $tweet_ids The IDs of the Tweets to delete
@@ -315,7 +363,7 @@ class CryptoStatus
         $failed_deletes = [];
 
         foreach ($tweet_ids as $tweet_id) {
-            if ($this->twitter_client->deleteTweet($tweet_id)) {
+            if ($this->deleteTweet($tweet_id)) {
                 $deleted_counter++;
             } else {
                 $failed_deletes[] = $tweet_id;
@@ -328,12 +376,42 @@ class CryptoStatus
     }
 
     /**
+     * Delete a single tweet
+     *
+     * @param $tweet_id
+     * @return bool
+     */
+    protected function deleteTweet($tweet_id) : bool
+    {
+        return $this->twitter_client->deleteTweet($tweet_id);
+    }
+
+    /**
+     * Get Crypto client options
+     *
+     * @return array
+     * @throws Exceptions\ConfigException
+     */
+    protected function getCryptoClientOptions() : array
+    {
+        return [
+            'api' => $this->config->get('crypto_api.url'),
+            'endpoint' => $this->config->get('crypto_api.endpoint'),
+            'params' => [
+                'vs_currency' => $this->config->get('crypto_api.currency'),
+                'order' => $this->config->get('crypto_api.order'),
+                'per_page' => $this->config->get('crypto_api.limit'),
+            ],
+        ];
+    }
+
+    /**
      * Checks whether all necessary fields are set in the given dataset
      *
      * @param array $data
      * @return bool
      */
-    private function necessaryFieldsAreSet(array $data) : bool
+    protected function necessaryFieldsAreSet(array $data) : bool
     {
         return isset(
             $data['market_cap_rank'],
