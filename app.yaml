@@ -1,0 +1,7 @@
+runtime: php72
+
+entrypoint: php app/app.php
+
+handlers:
+    - url: /cryptostatus/hourly
+      script: auto

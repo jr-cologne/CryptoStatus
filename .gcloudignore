@@ -1,0 +1,13 @@
+.git
+.editorconfig
+.gcloudignore
+.gitattributes
+.gitignore
+app.yaml
+cron.yaml
+cloudbuild.yaml
+LICENSE
+composer.lock
+README.md
+vendor
+.idea
