@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.6.0
+ * @version v0.6.4
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -24,29 +24,40 @@
 namespace CryptoStatus;
 
 use CryptoStatus\Exceptions\EnvException;
+use Google\Cloud\Datastore\DatastoreClient;
 
 class Env
 {
 
     /**
-     * Load environment variables from .env file
+     * Load environment variables from gcloud datastore
      *
-     * @param string $dotenv_file
+     * @param DatastoreClient $datastore
      * @throws EnvException
      */
-    public function loadEnvVars(string $dotenv_file = '.env')
+    public function loadEnvVarsFromDatastore(DatastoreClient $datastore)
     {
-        if (!file_exists($dotenv_file)) {
-            throw new EnvException("The file ({$dotenv_file}) to load the environment variables from does not exist");
+        $data = $datastore->runQuery(
+            $datastore->query()
+                ->kind('env-vars')
+        );
+
+        $env_vars = [];
+
+        foreach ($data as $item) {
+            $env_vars[] = [
+                'name' => $item->name,
+                'value' => $item->value
+            ];
         }
 
-        $dotenv = file($dotenv_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-        if (!$dotenv) {
-            throw new EnvException("Failed to read environment variables file ({$dotenv_file})");
+        if (!$env_vars) {
+            throw new EnvException("Failed to read environment variables from datastore");
         }
 
-        foreach ($dotenv as $setting) {
+        foreach ($env_vars as $env_var) {
+            $setting = $env_var['name'] . '=' . $env_var['value'];
+
             if (!self::put($setting)) {
                 throw new EnvException('Failed to load environment variables');
             }
