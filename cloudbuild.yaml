@@ -1,7 +1,3 @@
 steps:
     - name: 'gcr.io/cloud-builders/gcloud'
-      args: [
-          'app', 'deploy',
-          'app.yaml', 'cron.yaml',
-          '-v', '$TAG_NAME--$BUILD_ID'
-      ]
+      args: [ 'app', 'deploy', 'app.yaml', 'cron.yaml' ]
