@@ -2,6 +2,7 @@
     "require": {
         "php": ">=7.1",
         "jublonet/codebird-php": "^3.1",
+        "google/cloud-datastore": "^1.9",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-json": "*"

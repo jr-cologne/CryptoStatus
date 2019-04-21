@@ -51,6 +51,3 @@ vendor
 
 # Exclude PHPStorm stuff
 .idea
-
-# Exclude .env file
-.env

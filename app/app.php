@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.6.0
+ * @version v0.6.4
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -26,9 +26,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CryptoStatus\Config;
 use CryptoStatus\CryptoStatus;
 use CryptoStatus\Env;
+use Google\Cloud\Datastore\DatastoreClient as GoogleCloudDatastore;
 
 $env = new Env;
-$env->loadEnvVars(__DIR__ . '/../.env');
+$env->loadEnvVarsFromDatastore(new GoogleCloudDatastore([
+    'projectId' => getenv('GOOGLE_CLOUD_PROJECT'),
+]));
 
 $app = new CryptoStatus(
     (new Config())->load(__DIR__ . '/config/config.php')
