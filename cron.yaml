@@ -2,3 +2,8 @@ cron:
     - description: "hourly CryptoStatus update"
       url: /cryptostatus/hourly
       schedule: every 1 hours synchronized
+      retry_parameters:
+          min_backoff_seconds: 60
+          max_backoff_seconds: 180
+          job_retry_limit: 2
+          job_age_limit: 5m
