@@ -30,6 +30,16 @@ class Env
 {
 
     /**
+     * Check if the current environment is the production environment
+     *
+     * @return bool
+     */
+    public function isProduction() : bool
+    {
+        return !empty(getenv('GOOGLE_CLOUD_PROJECT'));
+    }
+
+    /**
      * Load environment variables from gcloud datastore
      *
      * @param DatastoreClient $datastore
@@ -55,13 +65,28 @@ class Env
             throw new EnvException("Failed to read environment variables from datastore");
         }
 
-        foreach ($env_vars as $env_var) {
-            $setting = $env_var['name'] . '=' . $env_var['value'];
+        $this->putEnvVars($env_vars);
+    }
 
-            if (!self::put($setting)) {
-                throw new EnvException('Failed to load environment variables');
-            }
+    /**
+     * Load environment variables from .env file
+     *
+     * @param string $dotenv_file
+     * @throws EnvException
+     */
+    public function loadEnvVarsFromDotenvFile(string $dotenv_file)
+    {
+        if (!file_exists($dotenv_file)) {
+            throw new EnvException("The file ({$dotenv_file}) to load the environment variables from does not exist");
         }
+
+        $env_vars = file($dotenv_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if (!$env_vars) {
+            throw new EnvException("Failed to read environment variables file ({$dotenv_file})");
+        }
+
+        $this->putEnvVars($env_vars);
     }
 
     /**
@@ -91,5 +116,26 @@ class Env
         }
         
         return $env;
+    }
+
+    /**
+     * Set an array of environment variables
+     *
+     * @param array $env_vars
+     * @throws EnvException
+     */
+    protected function putEnvVars(array $env_vars) : void
+    {
+        foreach ($env_vars as $env_var) {
+            $setting = $env_var;
+
+            if (is_array($env_var)) {
+                $setting = $env_var['name'] . '=' . $env_var['value'];
+            }
+
+            if (!$this->put($setting)) {
+                throw new EnvException('Failed to load environment variables');
+            }
+        }
     }
 }

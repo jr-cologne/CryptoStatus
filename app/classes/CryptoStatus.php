@@ -38,6 +38,13 @@ class CryptoStatus
     protected $config;
 
     /**
+     * Defines whether testing mode is enabled
+     *
+     * @var bool $testing
+     */
+    protected $testing;
+
+    /**
      * The Twitter client instance
      *
      * @var TwitterClient $twitter_client
@@ -73,9 +80,10 @@ class CryptoStatus
      * @throws Exceptions\TwitterClientException
      * @throws Exceptions\ConfigException
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, bool $testing = false)
     {
         $this->config = $config;
+        $this->testing = $testing;
 
         $this->init();
     }
@@ -109,6 +117,11 @@ class CryptoStatus
         $this->formatTweetData();
 
         $tweets = $this->createTweets();
+
+        if ($this->testing) {
+            echo implode(PHP_EOL . PHP_EOL, $tweets);
+            die();
+        }
 
         if (!$this->postTweets($tweets)) {
             $this->deleteTweets($this->failed_tweets);

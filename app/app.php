@@ -29,12 +29,18 @@ use CryptoStatus\Env;
 use Google\Cloud\Datastore\DatastoreClient as GoogleCloudDatastore;
 
 $env = new Env;
-$env->loadEnvVarsFromDatastore(new GoogleCloudDatastore([
-    'projectId' => getenv('GOOGLE_CLOUD_PROJECT'),
-]));
+
+if ($env->isProduction()) {
+    $env->loadEnvVarsFromDatastore(new GoogleCloudDatastore([
+        'projectId' => getenv('GOOGLE_CLOUD_PROJECT'),
+    ]));
+} else {
+    $env->loadEnvVarsFromDotenvFile(__DIR__ . '/../.env');
+}
 
 $app = new CryptoStatus(
-    (new Config())->load(__DIR__ . '/config/config.php')
+    (new Config())->load(__DIR__ . '/config/config.php'),
+    !$env->isProduction()
 );
 
 $app->run();
