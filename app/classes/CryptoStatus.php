@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.6.8-beta
+ * @version v0.7.0-beta
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -36,6 +36,13 @@ class CryptoStatus
      * @var Config $config
      */
     protected $config;
+
+    /**
+     * Defines whether testing mode is enabled
+     *
+     * @var bool $testing
+     */
+    protected $testing;
 
     /**
      * The Twitter client instance
@@ -73,9 +80,10 @@ class CryptoStatus
      * @throws Exceptions\TwitterClientException
      * @throws Exceptions\ConfigException
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, bool $testing = false)
     {
         $this->config = $config;
+        $this->testing = $testing;
 
         $this->init();
     }
@@ -109,6 +117,11 @@ class CryptoStatus
         $this->formatTweetData();
 
         $tweets = $this->createTweets();
+
+        if ($this->testing) {
+            echo implode(PHP_EOL . PHP_EOL, $tweets);
+            die();
+        }
 
         if (!$this->postTweets($tweets)) {
             $this->deleteTweets($this->failed_tweets);
