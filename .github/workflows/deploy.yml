@@ -1,9 +1,6 @@
 name: Deploy to Google App Engine
 
-on:
-  push:
-    branches:
-    - master
+on: release
 
 jobs:
   set-env-vars:
