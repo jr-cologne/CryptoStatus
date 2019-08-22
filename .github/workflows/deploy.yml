@@ -1,6 +1,8 @@
 name: Deploy to Google App Engine
 
-on: release
+on:
+  release:
+    types: [ published ]
 
 jobs:
   set-env-vars:
