@@ -1,6 +1,9 @@
 name: Deploy to Google App Engine
 
-on: release
+on:
+  push:
+    branches:
+    - master
 
 jobs:
   set-env-vars:
@@ -8,7 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: set env vars
       - run: sed -i -e "s/twitter_api_consumer_key$/$TWITTER_API_CONSUMER_KEY/g" app.yaml
         env:
           TWITTER_API_CONSUMER_KEY: ${{secrets.TWITTER_API_CONSUMER_KEY}}
@@ -27,7 +29,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: deploy to app engine
       - uses: exelban/gcloud@master
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
