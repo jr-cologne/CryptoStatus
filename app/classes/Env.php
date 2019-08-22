@@ -24,7 +24,6 @@
 namespace CryptoStatus;
 
 use CryptoStatus\Exceptions\EnvException;
-use Google\Cloud\Datastore\DatastoreClient;
 
 class Env
 {
@@ -37,35 +36,6 @@ class Env
     public function isProduction() : bool
     {
         return !empty(getenv('GOOGLE_CLOUD_PROJECT'));
-    }
-
-    /**
-     * Load environment variables from gcloud datastore
-     *
-     * @param DatastoreClient $datastore
-     * @throws EnvException
-     */
-    public function loadEnvVarsFromDatastore(DatastoreClient $datastore)
-    {
-        $data = $datastore->runQuery(
-            $datastore->query()
-                ->kind('env-vars')
-        );
-
-        $env_vars = [];
-
-        foreach ($data as $item) {
-            $env_vars[] = [
-                'name' => $item->name,
-                'value' => $item->value
-            ];
-        }
-
-        if (!$env_vars) {
-            throw new EnvException("Failed to read environment variables from datastore");
-        }
-
-        $this->putEnvVars($env_vars);
     }
 
     /**
@@ -114,7 +84,7 @@ class Env
         if (!$env) {
             throw new EnvException('Invalid or unknown environment variable');
         }
-        
+
         return $env;
     }
 

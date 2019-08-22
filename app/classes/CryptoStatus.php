@@ -76,9 +76,10 @@ class CryptoStatus
      * CryptoStatus constructor.
      *
      * @param Config $config
+     * @param bool $testing
+     * @throws Exceptions\ConfigException
      * @throws Exceptions\CryptoClientException
      * @throws Exceptions\TwitterClientException
-     * @throws Exceptions\ConfigException
      */
     public function __construct(Config $config, bool $testing = false)
     {
@@ -152,7 +153,7 @@ class CryptoStatus
         $this->dataset = array_map(function (array $data) {
             if ($this->necessaryFieldsAreSet($data)) {
                 $data = $this->getBeautifiedData($data);
-        
+
                 return $this->getTweetDataString($data);
             }
 
@@ -174,7 +175,7 @@ class CryptoStatus
 
         return $data;
     }
-  
+
     /**
      * Convert string to camel case notation.
      *
@@ -185,7 +186,7 @@ class CryptoStatus
     {
         $camel_case_str = '';
         $capitalize = false;
-    
+
         foreach (str_split($str) as $char) {
             if (ctype_space($char) || $char == '-') {
                 $capitalize = true;
@@ -197,7 +198,7 @@ class CryptoStatus
 
             $camel_case_str .= $char;
         }
-    
+
         return $camel_case_str;
     }
 
@@ -222,7 +223,7 @@ class CryptoStatus
     {
         return number_format($number, 2);
     }
-  
+
     /**
      * Remove trailing zeros after decimal point from number
      *
@@ -232,7 +233,7 @@ class CryptoStatus
     protected function removeTrailingZeros(string $number) : string
     {
         $number_arr = array_reverse(str_split($number));
-    
+
         foreach ($number_arr as $key => $value) {
             if (is_numeric($value) && $value == 0) {
                 unset($number_arr[$key]);
@@ -244,9 +245,9 @@ class CryptoStatus
                 break;
             }
         }
-    
+
         $number = implode(array_reverse($number_arr));
-    
+
         return $number;
     }
 

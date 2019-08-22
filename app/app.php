@@ -26,15 +26,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CryptoStatus\Config;
 use CryptoStatus\CryptoStatus;
 use CryptoStatus\Env;
-use Google\Cloud\Datastore\DatastoreClient as GoogleCloudDatastore;
 
 $env = new Env;
 
-if ($env->isProduction()) {
-    $env->loadEnvVarsFromDatastore(new GoogleCloudDatastore([
-        'projectId' => getenv('GOOGLE_CLOUD_PROJECT'),
-    ]));
-} else {
+if (!$env->isProduction()) {
     $env->loadEnvVarsFromDotenvFile(__DIR__ . '/../.env');
 }
 
