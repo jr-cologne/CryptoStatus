@@ -5,7 +5,6 @@
 .gitignore
 app.yaml
 cron.yaml
-cloudbuild.yaml
 LICENSE
 composer.lock
 README.md
