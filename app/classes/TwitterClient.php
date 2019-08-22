@@ -10,7 +10,7 @@
  * @author JR Cologne <kontakt@jr-cologne.de>
  * @copyright 2019 JR Cologne
  * @license https://github.com/jr-cologne/CryptoStatus/blob/master/LICENSE MIT
- * @version v0.7.0-beta
+ * @version v0.8.0-beta
  * @link https://github.com/jr-cologne/CryptoStatus GitHub Repository
  *
  * ________________________________________________________________________________
@@ -72,7 +72,7 @@ class TwitterClient
     public function postTweet(array $params, array $return = [])
     {
         $reply = $this->client->statuses_update($params);
-    
+
         if ($reply->httpstatus == 200) {
             if (!empty($return)) {
                 return $this->getReturnData($return, $reply);
