@@ -6,7 +6,6 @@ Twitter Account: [@status_crypto](https://twitter.com/status_crypto)
 ## Dependencies
 - [PHP](http://php.net/) (version 7.1 or higher)
 - [Codebird Twitter API library](https://github.com/jublonet/codebird-php) (version ^3.1)
-- [Google Cloud PHP Datastore library](https://github.com/googleapis/google-cloud-php-datastore) (version ^1.9)
 
 ## Contributing and Support
 Feel free to contribute to or support this project. Any sort of help is much appreciated.
