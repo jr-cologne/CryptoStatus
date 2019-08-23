@@ -10,3 +10,4 @@ composer.lock
 README.md
 vendor
 .idea
+.github
