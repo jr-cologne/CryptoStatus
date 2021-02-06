@@ -113,7 +113,7 @@ class CryptoStatus
      */
     public function run()
     {
-        $this->dataset = $this->getDataset();
+        $this->dataset = $this->ensureSortingByMarketCapRank($this->getDataset());
 
         $this->formatTweetData();
 
@@ -141,6 +141,20 @@ class CryptoStatus
     protected function getDataset() : array
     {
         return $this->crypto_client->getData();
+    }
+
+    /**
+     * Ensure cryptocurrencies are correctly sorted by their market cap rank
+     *
+     * @return array
+     */
+    protected function ensureSortingByMarketCapRank(array $data) : array
+    {
+        usort($data, function ($item1, $item2) {
+            return $item1['market_cap_rank'] <=> $item2['market_cap_rank'];
+        });
+
+        return $data;
     }
 
     /**
