@@ -169,37 +169,12 @@ class CryptoStatus
      */
     protected function getBeautifiedData(array $data) : array
     {
-        $data['id'] = $this->camelCase($data['id']);
         $data['current_price'] = $this->formatNumber($data['current_price']);
         $data['price_change_percentage_24h'] = $this->formatNumber($data['price_change_percentage_24h']);
+        $data['market_cap'] = $this->formatNumber($data['market_cap']);
+        $data['market_cap_change_percentage_24h'] = $this->formatNumber($data['market_cap_change_percentage_24h']);
 
         return $data;
-    }
-
-    /**
-     * Convert string to camel case notation.
-     *
-     * @param string $str
-     * @return string
-     */
-    protected function camelCase(string $str) : string
-    {
-        $camel_case_str = '';
-        $capitalize = false;
-
-        foreach (str_split($str) as $char) {
-            if (ctype_space($char) || $char == '-') {
-                $capitalize = true;
-                continue;
-            } elseif ($capitalize) {
-                $char = strtoupper($char);
-                $capitalize = false;
-            }
-
-            $camel_case_str .= $char;
-        }
-
-        return $camel_case_str;
     }
 
     /**
@@ -261,9 +236,10 @@ class CryptoStatus
     {
         return "#{$data['market_cap_rank']} "
             . "#{$data['symbol']} "
-            . "(#{$data['id']}): "
-            . "{$data['current_price']} USD | "
-            . "{$data['price_change_percentage_24h']}% 24h";
+            . "{$data['current_price']} USD "
+            . "{$data['price_change_percentage_24h']}% 24h | "
+            . "{$data['market_cap']} USD "
+            . "{$data['market_cap_change_percentage_24h']}% 24h";
     }
 
     /**
@@ -279,7 +255,7 @@ class CryptoStatus
         $length = 3;
 
         for ($i = 0; $i < 3; $i++) {
-            $tweets[$i] = "#HourlyCryptoStatus (#{$start_rank} to #{$end_rank}):\n\n";
+            $tweets[$i] = "#HourlyCryptoStatus\n\n";
             $tweets[$i] .= implode("\n\n", $this->getDataForSingleTweet($start_rank, $length));
 
             $start_rank += 3;
@@ -434,7 +410,9 @@ class CryptoStatus
             $data['symbol'],
             $data['id'],
             $data['current_price'],
-            $data['price_change_percentage_24h']
+            $data['price_change_percentage_24h'],
+            $data['market_cap'],
+            $data['market_cap_change_percentage_24h']
         );
     }
 }
