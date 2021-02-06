@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: sed -i -e "s/twitter_api_consumer_key$/$TWITTER_API_CONSUMER_KEY/g" app.yaml
         env:
           TWITTER_API_CONSUMER_KEY: ${{secrets.TWITTER_API_CONSUMER_KEY}}
@@ -22,7 +22,7 @@ jobs:
       - run: sed -i -e "s/twitter_api_access_token_secret$/$TWITTER_API_ACCESS_TOKEN_SECRET/g" app.yaml
         env:
           TWITTER_API_ACCESS_TOKEN_SECRET: ${{secrets.TWITTER_API_ACCESS_TOKEN_SECRET}}
-      - uses: exelban/gcloud@master
+      - uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
