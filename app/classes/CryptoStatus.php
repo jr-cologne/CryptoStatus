@@ -250,9 +250,9 @@ class CryptoStatus
     {
         return "#{$data['market_cap_rank']} "
             . "#{$data['symbol']} "
-            . "{$data['current_price']} USD "
+            . "\${$data['current_price']} "
             . "{$data['price_change_percentage_24h']}% 24h | "
-            . "{$data['market_cap']} USD "
+            . "\${$data['market_cap']} "
             . "{$data['market_cap_change_percentage_24h']}% 24h";
     }
 
